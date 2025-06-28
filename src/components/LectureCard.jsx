@@ -1,53 +1,51 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LectureCard({ lecture, to }) {
+export default function LectureCard({ lecture }) {
   const {
     title, d_day, status_label,
     day_of_week, time,
     start_date, end_date,
-    capacity, applied, remain
+    capacity, applied, remain,
+    id
   } = lecture
 
-  // 배지 색
-  const badgeClass =
-    status_label === '모집중'      ? 'bg-green-100 text-green-800'
-  : status_label === '진행중'      ? 'bg-blue-100 text-blue-800'
-  : status_label === '모집 마감'   ? 'bg-red-100 text-red-800'
-  :                                'bg-gray-100 text-gray-600'
-
-  // 내부강의인지 HRD인지
   const isAcademy = day_of_week != null
 
-  return (
-    <Link to={to} className="block bg-white rounded-lg shadow hover:shadow-md transition">
-      {/* 타이틀 + 배지 */}
-      <div className="flex justify-between items-start p-4">
-        <h3 className="text-lg font-semibold text-gray-800" style={{ minHeight: '3rem' }}>
-          {title}
-        </h3>
+  const badgeClass =
+    status_label === '모집중' ? 'bg-green-50 text-green-700'
+    : status_label === '진행중' ? 'bg-blue-50 text-blue-700'
+    : status_label === '모집 마감' ? 'bg-red-50 text-red-700'
+    : 'bg-gray-100 text-gray-600'
 
-      </div>
+  const content = (
+    <div className="h-full bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-lg hover:ring-2 hover:ring-gray-100 hover:-translate-y-1 transition-all duration-200 ease-in-out flex flex-col justify-between space-y-4">
+      {/* ── 제목 ── */}
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 line-clamp-2">
+        {title}
+      </h3>
 
-      {/* 일정 */}
-      <div className="px-4 py-2 flex justify-between items-center text-sm text-gray-600">
-        {isAcademy
-          ? `${day_of_week} · ${time}`
-          : `${start_date} ~ ${end_date}`}
-        <span className={`px-2 py-1 text-xs font-medium rounded-full ${badgeClass}`}>
+      {/* ── 일정 & 상태 ── */}
+      <div className="flex justify-between items-center text-sm text-gray-500">
+        {isAcademy ? `${day_of_week} · ${time}` : `${start_date} ~ ${end_date}`}
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${badgeClass}`}>
           {status_label}
         </span>
       </div>
 
-      {/* D-Day + 현황 */}
-        <div className="flex justify-between items-center p-4 text-sm text-gray-700">
-        <span className="font-bold text-red-500">{d_day}</span>
-        {isAcademy ? (
-            <span>모집: <strong>{remain}</strong>명</span>
-        ) : (
-            null // HRD는 인원 미표시
-        )}
-        </div>
+      {/* ── D-Day & 모집 현황 ── */}
+      <div className="flex justify-between items-center text-sm text-gray-700 mt-auto">
+        <span className="text-red-500 font-semibold">{d_day}</span>
+        {isAcademy && <span>모집: <strong>{remain}</strong>명</span>}
+      </div>
+    </div>
+  )
+
+  return isAcademy ? (
+    <Link to={`/lectures/${id}`} className="block h-full">
+      {content}
     </Link>
+  ) : (
+    content
   )
 }
