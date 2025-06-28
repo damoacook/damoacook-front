@@ -1,4 +1,4 @@
-# Logs
+# 로그 파일
 logs
 *.log
 npm-debug.log*
@@ -7,18 +7,31 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# 빌드 아웃풋
+dist/
+dist-ssr/
 
-# Editor directories and files
-.vscode/*
+# 환경설정
+*.local
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+
+# Vite 캐시
+.vite/
+
+# 에디터
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# 시스템
+Thumbs.db
