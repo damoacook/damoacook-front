@@ -21,8 +21,10 @@ import GreetingPage from './pages/about/GreetingPage';
 // import PartnersPage from './pages/about/PartnersPage';
 
 // Community pages
-import NewsPage from './pages/community/NewsPage';
-import GalleryPage from './pages/community/GalleryPage';
+import CommunityLayout from './components/CommunityLayout'
+import NewsPage from './pages/community/NewsPage'
+import NewsDetailPage from './pages/community/NewsDetailPage'
+
 
 export default function App() {
   return (
@@ -55,9 +57,9 @@ export default function App() {
           </Route>
 
           {/* ── Community (중첩 라우트) */}
-          <Route path="community">
-            <Route path="news" element={<NewsPage />} />
-            <Route path="gallery" element={<GalleryPage />} />
+          <Route path="/news" element={<CommunityLayout />}>
+            <Route index element={<NewsPage />} />
+            <Route path=":id" element={<NewsDetailPage />} />
           </Route>
 
           {/* ── 그 외: 홈으로 리다이렉트 */}
