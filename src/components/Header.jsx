@@ -58,6 +58,7 @@ export default function Header() {
                     ['연혁', '/about/history'],
                     ['비전', '/about/vision'],
                     ['협력업체', '/about/partners'],
+                    ['위치안내', '/location'],
                   ].map(([label, to]) => (
                     <li key={to}>
                       <Link to={to} className="block px-4 py-2 text-gray-800 hover:text-orange-500 hover:bg-gray-100">
@@ -86,8 +87,7 @@ export default function Header() {
                 <ul className="absolute top-full left-0 mt-0 w-40 bg-white shadow-lg rounded divide-y divide-gray-100 hidden group-hover:block z-10">
                   {[
                     ['공지사항', '/news'],
-                    ['입학상담', '/inquiries'],
-                    ['수강후기', '/reviews'],
+                    ['갤러리', '/gallery'],
                   ].map(([label, to]) => (
                     <li key={to}>
                       <Link to={to} className="block px-4 py-2 text-gray-800 hover:text-orange-500 hover:bg-gray-100">
@@ -96,6 +96,15 @@ export default function Header() {
                     </li>
                   ))}
                 </ul>
+              </li>
+              {/* 수강문의 메뉴 */}
+              <li>
+                <Link
+                  to="/inquiries"
+                  className="text-gray-800 hover:text-orange-500"
+                >
+                  수강문의
+                </Link>
               </li>
               {/* …추가 메뉴 */}
             </ul>
@@ -132,6 +141,7 @@ export default function Header() {
                       ['연혁', '/about/history'],
                       ['비전', '/about/vision'],
                       ['협력업체', '/about/partners'],
+                      ['위치안내', '/location'],
                     ].map(([label, to]) => (
                       <li key={to} className="pl-8 bg-orange-400">
                         <Link
@@ -191,8 +201,7 @@ export default function Header() {
                 <ul>
                   {[
                     ['공지사항', '/news'],
-                    ['입학상담', '/inquiries'],
-                    ['수강후기', '/reviews'],
+                    ['갤러리', '/gallery']
                   ].map(([label, to]) => (
                     <li key={to} className="pl-8 bg-orange-400">
                       <Link
@@ -211,6 +220,32 @@ export default function Header() {
               )}
             </li>
 
+              {/* 수강문의 */}
+            <li className="border-b">
+              <button
+                onClick={() => toggleSubmenu('inquiries')}
+                className="w-full flex justify-between items-center px-4 py-3 text-gray-800 hover:bg-gray-100"
+              >
+                수강문의
+                <FaChevronDown className={submenuOpen.inquiries ? 'rotate-180' : ''} />
+              </button>
+              {submenuOpen.inquiries && (
+                <ul>
+                  <li className="pl-8 bg-orange-400">
+                    <Link
+                      to="/inquiries"
+                      className="block py-2 text-white hover:text-orange-600"
+                      onClick={() => {
+                        setSubmenuOpen(prev => ({ ...prev, inquiries: false }))
+                        setMobileOpen(false)
+                      }}
+                    >
+                      수강문의 하기
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
             {/* …필요한 만큼 메뉴 추가 */}
           </ul>
         </nav>

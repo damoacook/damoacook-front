@@ -10,7 +10,7 @@ export default function CommunityLayout() {
       </div>
 
       {/* 탭 메뉴 (선택사항) */}
-      <div className="flex gap-4 border-b pb-2">
+      {/* <div className="flex gap-4 border-b pb-2">
         <NavLink
           to="."
           className={({ isActive }) =>
@@ -21,7 +21,7 @@ export default function CommunityLayout() {
         >
           공지사항
         </NavLink>
-      </div>
+      </div> */}
 
       {/* 각 커뮤니티 페이지 */}
       <Outlet />

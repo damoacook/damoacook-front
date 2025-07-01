@@ -15,7 +15,7 @@ export default function HomePage() {
     { icon: FaBook,         title: '모집과정', link: '/lectures' },
     { icon: FaSchool,       title: '학원소개', link: '/about'    },
     { icon: FaImages,       title: '갤러리',   link: '/gallery'  },
-    { icon: FaMapMarkerAlt, title: '오시는길', link: '/location' },
+    { icon: FaMapMarkerAlt, title: '위치안내', link: '/location' },
   ];
 
   return (
@@ -27,7 +27,7 @@ export default function HomePage() {
 
       {/* 2) 메뉴 + 전화번호 영역 */}
       <section className="container mx-auto px-4 mt-8 md:mt-12 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center">
           {/* ─── 메뉴 영역 ─── mobile:2cols, desktop:4cols */}
           <div className="col-span-2 md:col-span-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

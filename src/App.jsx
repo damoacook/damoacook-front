@@ -21,9 +21,11 @@ import GreetingPage from './pages/about/GreetingPage';
 // import PartnersPage from './pages/about/PartnersPage';
 
 // Community pages
-import CommunityLayout from './components/CommunityLayout'
-import NewsPage from './pages/community/NewsPage'
-import NewsDetailPage from './pages/community/NewsDetailPage'
+import CommunityLayout from './components/CommunityLayout';
+import NewsPage from './pages/community/NewsPage';
+import NewsDetailPage from './pages/community/NewsDetailPage';
+import GalleryPage from './pages/community/GalleryPage';
+import GalleryDetailPage from './pages/community/GalleryDetailPage';
 
 
 export default function App() {
@@ -60,6 +62,10 @@ export default function App() {
           <Route path="/news" element={<CommunityLayout />}>
             <Route index element={<NewsPage />} />
             <Route path=":id" element={<NewsDetailPage />} />
+          </Route>
+          <Route path="/gallery" element={<CommunityLayout />}>
+            <Route index element={<GalleryPage />} />
+            <Route path=":id" element={<GalleryDetailPage />} />
           </Route>
 
           {/* ── 그 외: 홈으로 리다이렉트 */}
