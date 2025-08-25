@@ -1,20 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
 
-const NaverMap = () => {
+function loadNaverScript() {
+  if (window.naver?.maps) return Promise.resolve();
+  if (window.__naverMapScriptPromise) return window.__naverMapScriptPromise;
+
+  const key = import.meta.env.VITE_NAVER_MAP_KEY; // 도메인 제한 필수!
+  const script = document.createElement("script");
+  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${key}`;
+  script.async = true;
+
+  window.__naverMapScriptPromise = new Promise((resolve, reject) => {
+    script.onload = () => resolve();
+    script.onerror = reject;
+  });
+
+  document.head.appendChild(script);
+  return window.__naverMapScriptPromise;
+}
+
+/** 순수 지도만 렌더(스크롤/클릭 로딩은 상위에서 제어) */
+export default function NaverMap({
+  lat = 35.88699108738317,
+  lng = 128.63887592530463,
+  zoom = 16,
+  height = 360,
+  markerTitle = "다모아요리학원 (2층)",
+}) {
+  const boxRef = useRef(null);
+
   useEffect(() => {
-    const script = document.createElement('script');
-    const key = import.meta.env.VITE_NAVER_MAP_KEY;
+    let map, marker, infowindow;
+    loadNaverScript().then(() => {
+      const naver = window.naver;
+      const location = new naver.maps.LatLng(lat, lng);
 
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${key}`;
-    script.async = true;
-    script.onload = () => {
-      const HOME_PATH = '.'; // 이미지 경로 기준 (public 폴더 기준)
-
-      const location = new naver.maps.LatLng(35.88699108738317, 128.63887592530463 ); // 아양로 239
-
-      const map = new naver.maps.Map('map', {
+      map = new naver.maps.Map(boxRef.current, {
         center: location,
-        zoom: 16,
+        zoom,
         zoomControl: true,
         zoomControlOptions: {
           style: naver.maps.ZoomControlStyle.SMALL,
@@ -22,41 +44,31 @@ const NaverMap = () => {
         },
       });
 
-      const marker = new naver.maps.Marker({
-        map: map,
-        position: location,
-      });
-
-      const contentString = `
-        <div style="padding:10px; max-width:200px;">
-          <h4 style="margin-bottom:5px;">다모아 요리학원 <strong>2층</strong></h4>
-          </p>
-        </div>
-      `;
-
-      const infowindow = new naver.maps.InfoWindow({
-        content: contentString,
+      marker = new naver.maps.Marker({ map, position: location });
+      infowindow = new naver.maps.InfoWindow({
+        content: `
+          <div style="padding:10px;max-width:220px;">
+            <h4 style="margin-bottom:4px;">${markerTitle}</h4>
+            <p style="font-size:12px;color:#555;">클릭하면 창이 닫혀요</p>
+          </div>
+        `,
         maxWidth: 240,
         borderWidth: 1,
       });
 
-      // 마커 클릭 시 정보창 열기
-      naver.maps.Event.addListener(marker, 'click', () => {
-        if (infowindow.getMap()) {
-          infowindow.close();
-        } else {
-          infowindow.open(map, marker);
-        }
+      naver.maps.Event.addListener(marker, "click", () => {
+        if (infowindow.getMap()) infowindow.close();
+        else infowindow.open(map, marker);
       });
 
-      // 최초에 자동으로 열기
+      // 최초 한 번 열기
       infowindow.open(map, marker);
+    });
+
+    return () => {
+      // 네이버맵은 언마운트 시 자동 GC 대상이라 별 처리 없어도 OK
     };
+  }, [lat, lng, zoom, markerTitle]);
 
-    document.head.appendChild(script);
-  }, []);
-
-  return <div id="map" style={{ width: '100%', height: '400px' }} />;
-};
-
-export default NaverMap;
+  return <div ref={boxRef} style={{ width: "100%", height }} />;
+}
