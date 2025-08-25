@@ -1,0 +1,21 @@
+name: Frontend CI
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [develop]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ # 프론트 루트로 변경 필요시 수정
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      # - run: npm run lint   # 있으면
