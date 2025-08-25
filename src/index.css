@@ -14,3 +14,56 @@
 @layer utilities {
   /* 예: @apply 로 만든 유틸리티 클래스 */
 }
+
+/* Swiper 화살표 위치 조정 */
+.lecture-swiper {
+  position: relative;
+  padding: 0 2.5rem;
+  overflow: hidden;
+}
+
+/* 공통 버튼 스타일 */
+.lecture-swiper .swiper-button-prev,
+.lecture-swiper .swiper-button-next {
+  top: 55%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  border-radius: 9999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+
+/* 🔥 아이콘 크기 조절 */
+.lecture-swiper .swiper-button-prev::after,
+.lecture-swiper .swiper-button-next::after {
+  font-size: 19px !important;
+}
+
+/* 기본 색상: 회색 */
+.lecture-swiper .swiper-button-prev,
+.lecture-swiper .swiper-button-next {
+  color: #d1d5db !important;
+}
+
+/* 슬라이드 이동 가능 시: 검정색 */
+.lecture-swiper .swiper-button-prev:not(.swiper-button-disabled),
+.lecture-swiper .swiper-button-next:not(.swiper-button-disabled) {
+  color: #000000 !important;
+}
+
+/* 슬라이드 불가능 시: 회색 유지 */
+.lecture-swiper .swiper-button-prev.swiper-button-disabled,
+.lecture-swiper .swiper-button-next.swiper-button-disabled {
+  color: #d1d5db !important;
+}
+
+/* 위치 조정 */
+.lecture-swiper .swiper-button-prev {
+  left: -5px;
+}
+.lecture-swiper .swiper-button-next {
+  right: -5px;
+}
