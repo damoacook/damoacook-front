@@ -63,11 +63,6 @@ export default function ContactMapCta() {
                 길찾기(네이버)
               </a>
             </div>
-
-            {/* 안내 문구(선택) */}
-            <p className="mt-3 text-xs text-gray-500">
-              * 스크롤 시 지도 스크립트가 로드됩니다. 데이터 사용량이 걱정되면 미리보기 이미지만 보셔도 됩니다.
-            </p>
           </div>
         </div>
       </div>
