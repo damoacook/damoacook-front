@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://damoacook-back.onrender.com/api/$1" }
+  ]
+}
