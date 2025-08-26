@@ -1,24 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import { loadNaverScript } from "../lib/naverMapLoader";
 
-function loadNaverScript() {
-  if (window.naver?.maps) return Promise.resolve();
-  if (window.__naverMapScriptPromise) return window.__naverMapScriptPromise;
-
-  const key = import.meta.env.VITE_NAVER_MAP_KEY; // 도메인 제한 필수!
-  const script = document.createElement("script");
-  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${key}`;
-  script.async = true;
-
-  window.__naverMapScriptPromise = new Promise((resolve, reject) => {
-    script.onload = () => resolve();
-    script.onerror = reject;
-  });
-
-  document.head.appendChild(script);
-  return window.__naverMapScriptPromise;
-}
-
-/** 순수 지도만 렌더(스크롤/클릭 로딩은 상위에서 제어) */
 export default function NaverMap({
   lat = 35.88699108738317,
   lng = 128.63887592530463,
@@ -30,6 +12,7 @@ export default function NaverMap({
 
   useEffect(() => {
     let map, marker, infowindow;
+
     loadNaverScript().then(() => {
       const naver = window.naver;
       const location = new naver.maps.LatLng(lat, lng);
@@ -45,6 +28,7 @@ export default function NaverMap({
       });
 
       marker = new naver.maps.Marker({ map, position: location });
+
       infowindow = new naver.maps.InfoWindow({
         content: `
           <div style="padding:10px;max-width:220px;">
@@ -61,13 +45,8 @@ export default function NaverMap({
         else infowindow.open(map, marker);
       });
 
-      // 최초 한 번 열기
       infowindow.open(map, marker);
     });
-
-    return () => {
-      // 네이버맵은 언마운트 시 자동 GC 대상이라 별 처리 없어도 OK
-    };
   }, [lat, lng, zoom, markerTitle]);
 
   return <div ref={boxRef} style={{ width: "100%", height }} />;
