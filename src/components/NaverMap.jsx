@@ -41,12 +41,18 @@ export default function NaverMap({
       });
 
       naver.maps.Event.addListener(marker, "click", () => {
-        if (infowindow.getMap()) infowindow.close();
-        else infowindow.open(map, marker);
+          infowindow.getMap() ? infowindow.close() : infowindow.open(map, marker);
+        });
+
+        infowindow.open(map, marker);
+      })
+      .catch((err) => {
+        console.error("[NAVER MAPS] 스크립트 로드 실패:", err);
       });
 
-      infowindow.open(map, marker);
-    });
+    return () => {
+      // 네이버맵은 언마운트 시 GC 대상 — 별도 정리 필요 없음
+    };
   }, [lat, lng, zoom, markerTitle]);
 
   return <div ref={boxRef} style={{ width: "100%", height }} />;

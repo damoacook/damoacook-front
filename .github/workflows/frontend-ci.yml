@@ -1,21 +1,42 @@
 name: Frontend CI
+
 on:
-  pull_request:
-    branches: [main, develop]
+  workflow_dispatch: # 수동 실행 버튼
   push:
-    branches: [develop]
+    branches: [develop] # develop에 push할 때
+    paths:
+      - "src/**"
+      - "public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.*"
+      - ".github/workflows/frontend-ci.yml"
+  pull_request:
+    branches: [main, develop] # PR 열리면
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./ # 프론트 루트로 변경 필요시 수정
+        working-directory: ./
+    env:
+      NODE_OPTIONS: --max-old-space-size=2048
+      # Vite 빌드에서 참조하는 변수들 (없으면 빈 값으로 들어감)
+      VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+      VITE_NAVER_MAP_CLIENT_ID: ${{ secrets.VITE_NAVER_MAP_CLIENT_ID }}
+      VITE_NAVER_MAP_SUBMODULES: ${{ vars.VITE_NAVER_MAP_SUBMODULES }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
-      - run: npm ci
-      - run: npm run build
-      # - run: npm run lint   # 있으면
+
+      # npm 레지스트리 혼잡(429) 완화
+      - run: npm config set fetch-retries 5
+      - run: npm config set fetch-retry-maxtimeout 120000
+
+      - run: npm ci --no-audit --fund=false
+      - run: npm run build --if-present
