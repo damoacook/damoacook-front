@@ -14,7 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./
+        working-directory: ./ # 하위폴더면 ./frontend 로 바꾸세요
+    env:
+      # npm의 재시도/타임아웃 환경변수 (모든 step에 적용)
+      NPM_CONFIG_FETCH_RETRIES: 5
+      NPM_CONFIG_FETCH_RETRY_FACTOR: 2
+      NPM_CONFIG_FETCH_RETRY_MINTIMEOUT: 20000
+      NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT: 120000
+      NPM_CONFIG_TIMEOUT: 600000
     steps:
       - uses: actions/checkout@v4
 
@@ -22,18 +29,18 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: package-lock.json # 하위폴더면 frontend/package-lock.json
 
-      # 네트워크 튜닝(재시도/백오프)
-      - name: Tune npm fetch retries
+      # (옵션) npm 설정을 한 번 더 보장하고 싶으면 아래 step 유지
+      - name: Tune npm fetch retries (npm only)
         run: |
           npm config set fetch-retries 5
+          npm config set fetch-retry-factor 2
           npm config set fetch-retry-mintimeout 20000
           npm config set fetch-retry-maxtimeout 120000
-          npm config set network-concurrency 3
+          npm config set timeout 600000
 
-      # 설치 재시도 루프 (429 완화)
-      - name: npm ci (with retry)
+      - name: npm ci (with retry/backoff)
         run: |
           for i in 1 2 3 4 5; do
             npm ci --no-audit --no-fund && break || {
@@ -45,10 +52,9 @@ jobs:
       - name: Build
         run: npm run build
 
-      # 선택: 빌드 산출물 확인용 아티팩트 업로드
       - name: Upload dist
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist
+          path: dist # 하위폴더면 frontend/dist
