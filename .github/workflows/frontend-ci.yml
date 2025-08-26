@@ -1,60 +1,42 @@
 name: Frontend CI
-on:
-  pull_request:
-    branches: [main, develop]
-  push:
-    branches: [develop]
 
-concurrency:
-  group: frontend-${{ github.ref }}
-  cancel-in-progress: true
+on:
+  workflow_dispatch: # 수동 실행 버튼
+  push:
+    branches: [develop] # develop에 push할 때
+    paths:
+      - "src/**"
+      - "public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.*"
+      - ".github/workflows/frontend-ci.yml"
+  pull_request:
+    branches: [main, develop] # PR 열리면
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./ # 하위폴더면 ./frontend 로 바꾸세요
+        working-directory: ./
     env:
-      # npm의 재시도/타임아웃 환경변수 (모든 step에 적용)
-      NPM_CONFIG_FETCH_RETRIES: 5
-      NPM_CONFIG_FETCH_RETRY_FACTOR: 2
-      NPM_CONFIG_FETCH_RETRY_MINTIMEOUT: 20000
-      NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT: 120000
-      NPM_CONFIG_TIMEOUT: 600000
+      NODE_OPTIONS: --max-old-space-size=2048
+      # Vite 빌드에서 참조하는 변수들 (없으면 빈 값으로 들어감)
+      VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+      VITE_NAVER_MAP_CLIENT_ID: ${{ secrets.VITE_NAVER_MAP_CLIENT_ID }}
+      VITE_NAVER_MAP_SUBMODULES: ${{ vars.VITE_NAVER_MAP_SUBMODULES }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: package-lock.json # 하위폴더면 frontend/package-lock.json
+          node-version: "20"
+          cache: "npm"
 
-      # (옵션) npm 설정을 한 번 더 보장하고 싶으면 아래 step 유지
-      - name: Tune npm fetch retries (npm only)
-        run: |
-          npm config set fetch-retries 5
-          npm config set fetch-retry-factor 2
-          npm config set fetch-retry-mintimeout 20000
-          npm config set fetch-retry-maxtimeout 120000
-          npm config set timeout 600000
+      # npm 레지스트리 혼잡(429) 완화
+      - run: npm config set fetch-retries 5
+      - run: npm config set fetch-retry-maxtimeout 120000
 
-      - name: npm ci (with retry/backoff)
-        run: |
-          for i in 1 2 3 4 5; do
-            npm ci --no-audit --no-fund && break || {
-              echo "npm ci failed (attempt $i). sleeping $((i*15))s..."
-              sleep $((i*15));
-            }
-          done
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload dist
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist # 하위폴더면 frontend/dist
+      - run: npm ci --no-audit --fund=false
+      - run: npm run build --if-present
