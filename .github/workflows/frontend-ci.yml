@@ -4,18 +4,51 @@ on:
     branches: [main, develop]
   push:
     branches: [develop]
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./ # 프론트 루트로 변경 필요시 수정
+        working-directory: ./
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
-      - run: npm ci
-      - run: npm run build
-      # - run: npm run lint   # 있으면
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # 네트워크 튜닝(재시도/백오프)
+      - name: Tune npm fetch retries
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+          npm config set network-concurrency 3
+
+      # 설치 재시도 루프 (429 완화)
+      - name: npm ci (with retry)
+        run: |
+          for i in 1 2 3 4 5; do
+            npm ci --no-audit --no-fund && break || {
+              echo "npm ci failed (attempt $i). sleeping $((i*15))s..."
+              sleep $((i*15));
+            }
+          done
+
+      - name: Build
+        run: npm run build
+
+      # 선택: 빌드 산출물 확인용 아티팩트 업로드
+      - name: Upload dist
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
