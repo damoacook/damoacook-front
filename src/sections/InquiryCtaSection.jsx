@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { sendInquiry } from "../api/inquiry";
 import { FaChevronDown } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function InquiryCtaSection() {
   const [showPrivacy, setShowPrivacy] = React.useState(false);
@@ -59,15 +60,15 @@ export default function InquiryCtaSection() {
             </div>
 
             <div className="mt-4 text-sm text-gray-600">
-              전체 양식으로 작성하길 원하시면{" "}
-              <a
-                href="/inquiries"
-                className="font-semibold text-orange-700 underline underline-offset-2 hover:text-orange-800"
-              >
-                수강문의 페이지
-              </a>
-              로 이동하세요.
-            </div>
+                전체 양식으로 작성하길 원하시면{" "}
+                <Link
+                    to="/inquiries"   // ✅ a → Link
+                    className="font-semibold text-orange-700 underline underline-offset-2 hover:text-orange-800"
+                >
+                    수강문의 페이지
+                </Link>
+                로 이동하세요.
+                </div>
           </div>
 
           {/* Right: mini form */}

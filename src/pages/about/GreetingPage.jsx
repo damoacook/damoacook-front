@@ -1,6 +1,7 @@
 // src/sections/DamoaGreetingSection.jsx
 import { motion } from "framer-motion";
 import { ArrowRight, ChefHat, Award, UtensilsCrossed } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function DamoaGreetingSection() {
   return (
@@ -72,7 +73,6 @@ export default function DamoaGreetingSection() {
             </ul>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              {/* 과정 살펴보기 */}
               <Link
                 to="/lectures"
                 className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -80,7 +80,7 @@ export default function DamoaGreetingSection() {
                 과정 살펴보기
                 <ArrowRight size={16} />
               </Link>
-              {/* 상담 문의 */}
+
               <Link
                 to="/inquiries"
                 className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
