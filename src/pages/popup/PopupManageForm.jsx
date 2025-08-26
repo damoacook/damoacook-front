@@ -178,17 +178,6 @@ export default function PopupManageForm() {
         />
       </div>
 
-      {/* 노출 토글 */}
-      <label className="inline-flex items-center gap-2">
-        <input
-          type="checkbox"
-          className="rounded border-gray-300"
-          checked={isActive}
-          onChange={(e) => setIsActive(e.target.checked)}
-        />
-        <span className="text-sm text-gray-800">노출하기</span>
-      </label>
-
       {/* 버튼 */}
       <div className="pt-4 flex justify-end gap-2">
         <button type="button" onClick={() => nav(-1)} className="rounded border border-gray-300 px-4 py-2 hover:bg-gray-50">
