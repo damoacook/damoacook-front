@@ -168,7 +168,7 @@ export default function HomePage() {
     { icon: FaBook, title: "모집과정", link: "/lectures" },
     { icon: FaSchool, title: "학원소개", link: "/about" },
     { icon: FaImages, title: "갤러리", link: "/gallery" },
-    { icon: FaMapMarkerAlt, title: "위치안내", link: "/location" },
+    { icon: FaMapMarkerAlt, title: "위치안내", link: "/about/location" },
   ];
 
   const partnersHome = React.useMemo(
