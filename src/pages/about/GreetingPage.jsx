@@ -72,19 +72,21 @@ export default function DamoaGreetingSection() {
             </ul>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <a
-                href="#courses"
+              {/* 과정 살펴보기 */}
+              <Link
+                to="/lectures"
                 className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-300"
               >
                 과정 살펴보기
                 <ArrowRight size={16} />
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              {/* 상담 문의 */}
+              <Link
+                to="/inquiries"
                 className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
               >
                 상담 문의
-              </a>
+              </Link>
               <span className="text-xs text-gray-500">* 조리기능장반 상시 모집</span>
             </div>
           </motion.div>
