@@ -335,7 +335,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-12"> */}
             {/* 시험정보 */}
             {/* <div>
               <div className="flex justify-between items-center mb-4">
@@ -354,7 +354,7 @@ export default function HomePage() {
                 ))}
               </ul>
             </div> */}
-          </div>
+          {/* </div> */}
         </section>
       </motion.section>
 
