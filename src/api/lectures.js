@@ -26,8 +26,8 @@ export async function fetchAcademyLectures({ page = 1, page_size = 10 } = {}) {
         time:         item.time ?? null,
         start_date:   item.start_date,
         end_date:     item.end_date,
-        capacity:     cap,                 // ✅ 서버 값 유지
-        applied:      app,                 // ✅ 서버 값 유지
+        capacity:     cap,                 // 서버 값 유지
+        applied:      app,                 // 서버 값 유지
         remain:       item.remain ?? (cap != null && app != null ? Math.max(cap - app, 0) : null),
         status_label: item.status,         // 원본도 유지(카드에서 보정 계산)
         d_day:        item.days_left != null ? `D-${item.days_left}` : null,
@@ -54,7 +54,7 @@ export async function fetchHrdLectures({ page = 1, page_size = 10 } = {}) {
     results: data.results.map(item => ({
       process_id:   item.process_id   ?? item.trprId ?? item.trpr_id ?? item.TRPR_ID,
       process_time: item.process_time ?? item.trprDegr ?? item.tracse_tme ?? item.TRACSE_TME,
-      // ✅ torg_id 보강
+      // torg_id 보강
       torg_id:      item.torg_id
                 ?? item.trainstCstmrId
                 ?? item.trainstCstmrID
@@ -103,7 +103,7 @@ export async function fetchHrdLectureDetail({ trpr_id, tracse_tme, torg_id }) {
 }
 
 /**
- * ✅ 전체 강의 리스트 조회 (HRD 식별자도 보존)
+ *  전체 강의 리스트 조회 (HRD 식별자도 보존)
  */
 export async function fetchAllLectures({ page = 1, page_size = 10 } = {}) {
   const q = new URLSearchParams({ page, page_size });
@@ -121,7 +121,7 @@ export async function fetchAllLectures({ page = 1, page_size = 10 } = {}) {
       // 내부 강의용
       id: item.id ?? null,
 
-      // ✅ HRD 식별자 보존(여러 네이밍 케이스 흡수)
+      //  HRD 식별자 보존(여러 네이밍 케이스 흡수)
       process_id:   item.process_id   ?? item.trpr_id   ?? item.trprId   ?? item.TRPR_ID ?? null,
       process_time: item.process_time ?? item.tracse_tme?? item.tracseTme?? item.TRACSE_TME ?? null,
       torg_id:      item.torg_id      ?? item.torgId    ?? item.TORG_ID ?? null,
@@ -143,7 +143,7 @@ export async function fetchAllLectures({ page = 1, page_size = 10 } = {}) {
 
 function authHeaders() {
   const token = localStorage.getItem('accessToken');
-  // 👉 접두사는 뉴스/갤러리에서 쓰던 걸로 통일하세요.
+  //  접두사는 뉴스/갤러리에서 쓰던 걸로 통일
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
@@ -178,7 +178,7 @@ export async function createAcademyLecture(payload) {
   return res.json();
 }
 
-// 내부 강의 수정  ✅ 엔드포인트: /<id>/update/
+// 내부 강의 수정   엔드포인트: /<id>/update/
 export async function updateAcademyLecture(id, payload) {
   const token = localStorage.getItem('accessToken')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}
@@ -206,7 +206,7 @@ export async function updateAcademyLecture(id, payload) {
   return res.json()
 }
 
-// 내부 강의 삭제  ✅ 엔드포인트: /<id>/
+// 내부 강의 삭제   엔드포인트: /<id>/
 export async function deleteAcademyLecture(id) {
   const token = localStorage.getItem('accessToken')
   const headers = token ? { Authorization: `Bearer ${token}` } : {}

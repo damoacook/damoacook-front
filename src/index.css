@@ -36,7 +36,7 @@
   opacity: 1;
 }
 
-/* 🔥 아이콘 크기 조절 */
+/* 아이콘 크기 조절 */
 .lecture-swiper .swiper-button-prev::after,
 .lecture-swiper .swiper-button-next::after {
   font-size: 19px !important;
@@ -67,3 +67,14 @@
 .lecture-swiper .swiper-button-next {
   right: -5px;
 }
+
+/* e.g. src/index.css or 해당 페이지 CSS */
+.prose a {
+  text-decoration: underline;
+  color: #2563eb;            /* Tailwind blue-600 */
+}
+.prose a:visited { color: #4f46e5; } /* indigo-600 */
+
+/* CKEditor 본문 높이 */
+.editor-box .ck-editor__editable_inline { min-height: 520px; }
+@media (min-width: 1024px){ .editor-box .ck-editor__editable_inline{ min-height: 620px; } }

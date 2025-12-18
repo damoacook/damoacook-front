@@ -7,13 +7,22 @@ export async function fetchGalleryList({ page = 1, page_size = 12, search = '', 
 
   const res = await fetch(`/api/gallery/?${qs.toString()}`);
   if (!res.ok) throw new Error('갤러리를 불러오지 못했습니다.');
-  return res.json(); // { count, next, previous, results: [...] }
+  // return res.json(); // { count, next, previous, results: [...] }
+   const data = await res.json();
+ // 필드 정규화: image <- image_url 우선
+   const results = (data.results ?? []).map(it => ({
+     ...it,
+     image: it.image ?? it.image_url ?? null,
+   }));
+   return { ...data, results };
 }
 
 export async function fetchGalleryDetail(id) {
   const res = await fetch(`/api/gallery/${id}/`);
   if (!res.ok) throw new Error('갤러리 상세를 불러오지 못했습니다.');
-  return res.json();
+  // return res.json();
+  const d = await res.json();
+  return { ...d, image: d.image ?? d.image_url ?? null };
 }
 
 function authHeaders() {
@@ -32,7 +41,7 @@ export async function createGalleryItem(payload) {
     if (payload.description) fd.append('description', payload.description);
     fd.append('image', payload.imageFile);
     body = fd;
-    headers = { ...authHeaders() }; // ❗ Content-Type 자동
+    headers = { ...authHeaders() }; //  Content-Type 자동
   } else {
     body = JSON.stringify({
       title: payload.title,

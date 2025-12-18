@@ -112,7 +112,7 @@ export default function Header() {
                     ['시설소개', '/about/facilities'],
                     ['비전', '/about/vision'],
                     ['협력업체', '/about/partners'],
-                    ['위치안내', '/about/location'], // ✅ 경로 통일
+                    ['위치안내', '/about/location'], 
                   ].map(([label, to]) => (
                     <li key={to}>
                       <Link
@@ -187,6 +187,7 @@ export default function Header() {
                   {[
                     ['공지사항', '/news'],
                     ['갤러리', '/gallery'],
+                    // ['시험정보', '/exam'],
                   ].map(([label, to]) => (
                     <li key={to}>
                       <Link
@@ -248,7 +249,7 @@ export default function Header() {
                     ['시설소개', '/about/facilities'],
                     ['비전', '/about/vision'],
                     ['협력업체', '/about/partners'],
-                    ['위치안내', '/about/location'], // ✅ 통일
+                    ['위치안내', '/about/location'], 
                   ],
                 },
                 {
@@ -282,6 +283,7 @@ export default function Header() {
                   links: [
                     ['공지사항', '/news'],
                     ['갤러리', '/gallery'],
+                    // ['시험정보', '/exam'],
                   ],
                 },
                 {

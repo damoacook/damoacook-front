@@ -47,7 +47,7 @@ export async function updateNewsItem(id, { title, content, imageFile, removeImag
   if (title != null)   fd.append('title', title);
   if (content != null) fd.append('content', content);
 
-  // ✅ 삭제 전용 플래그
+  //  삭제 전용 플래그
   if (removeImage) fd.append('remove_image', 'true');
 
   // 새 파일이 있으면 교체

@@ -181,7 +181,7 @@ export default function AboutFacilitiesPage() {
                   key={src + i}
                   onClick={() => setActivePhotoIndex(i)}
                   className={[
-                    // ✅ 고정 크기 + 줄바꿈/축소 방지
+                    // 고정 크기 + 줄바꿈/축소 방지
                     "relative shrink-0 snap-start",
                     "w-[160px] h-[96px]", // 16:9 비율(가로 160px, 세로 96px)
                     "overflow-hidden rounded-xl ring-1 transition",
@@ -227,7 +227,7 @@ export default function AboutFacilitiesPage() {
       {/* 안내문 */}
       <p className="text-xs text-gray-500">
         ※ 사진은 대표 컷으로, 배치·장비는 수업 운영에 따라 일부 변경될 수 있습니다.
-        가로형(권장 1600×900) 이미지를 사용하면 가장 깔끔하게 보입니다.
+        {/* 가로형(권장 1600×900) 이미지를 사용하면 가장 깔끔하게 보입니다. */}
       </p>
     </div>
   );

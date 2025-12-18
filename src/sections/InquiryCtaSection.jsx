@@ -62,7 +62,7 @@ export default function InquiryCtaSection() {
             <div className="mt-4 text-sm text-gray-600">
                 전체 양식으로 작성하길 원하시면{" "}
                 <Link
-                    to="/inquiries"   // ✅ a → Link
+                    to="/inquiries"   //  a → Link
                     className="font-semibold text-orange-700 underline underline-offset-2 hover:text-orange-800"
                 >
                     수강문의 페이지

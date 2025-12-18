@@ -200,10 +200,6 @@ export default function DamoaTimelineSection() {
             );
           })}
         </ol>
-
-        <p className="mt-12 text-center text-xs text-gray-500">
-          ※ 각 연도는 대표 사진 1장만 사용합니다. 이미지는 관리자에서 교체 가능합니다.
-        </p>
       </div>
     </section>
   );

@@ -79,7 +79,7 @@ export default function PopupManageForm() {
         setTitle(data.title ?? '');
         setLinkUrl(data.link_url ?? '');
         setIsActive(Boolean(data.is_active));
-        setInitialUrl(data.image ?? '');
+        setInitialUrl(data.image ?? data.image_url ?? '');;
       } catch {
         alert('팝업 불러오기 실패');
       } finally {

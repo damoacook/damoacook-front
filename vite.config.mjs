@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),       // 이제 요렇게 호출
+    tailwindcss(),
   ],
   server: {
     proxy: {

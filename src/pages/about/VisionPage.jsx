@@ -8,7 +8,7 @@ import {
 
 const fade = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } } };
 
-// ====================== 콘텐츠 (PPT 요약 반영) ======================
+// ====================== 콘텐츠 ======================
 const VISION = "조리 기능 중심의 실무전문 교육을 선도하는 지역 대표 요리학원";
 
 const CORE_VALUES = [
