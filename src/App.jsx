@@ -26,13 +26,16 @@ import LocationSection from "./pages/about/LocationSection";
 
 // Community pages
 import CommunityLayout from './components/CommunityLayout';
-import NewsPage from './pages/community/NewsPage';
-import NewsDetailPage from './pages/community/NewsDetailPage';
-import NewsEditorPage from './pages/community/NewsEditorPage';
-import GalleryPage from './pages/community/GalleryPage';
-import GalleryDetailPage from './pages/community/GalleryDetailPage';
+import NewsPage from './pages/Community/NewsPage';
+import NewsDetailPage from './pages/Community/NewsDetailPage';
+import NewsEditorPage from './pages/Community/NewsEditorPage';
+import GalleryPage from './pages/Community/GalleryPage';
+import GalleryDetailPage from './pages/Community/GalleryDetailPage';
+import GalleryEditorPage from './pages/Community/GalleryEditorPage';
+import ExamPage from './pages/Community/ExamPage';
+import ExamDetailPage from './pages/Community/ExamDetailPage';
+import ExamEditorPage from './pages/Community/ExamEditorPage';
 import RequireAuth from './routes/RequireAuth';
-import GalleryEditorPage from './pages/community/GalleryEditorPage';
 
 import LegalPrivacy from "./pages/LegalPrivacy";
 
@@ -84,29 +87,33 @@ export default function App() {
           <Route path="/gallery" element={<CommunityLayout />}>
             <Route index element={<GalleryPage />} />
             <Route path=":id" element={<GalleryDetailPage />} />
-
             {/* 작성(신규) — 로그인 필요 */}
+            <Route path="new" element={<RequireAuth><GalleryEditorPage /></RequireAuth>}/>
+            {/* 수정 — 로그인 필요 */}
+            <Route path=":id/edit" element={<RequireAuth><GalleryEditorPage /></RequireAuth>}/>
+          </Route>
+          <Route path="/certificates/:slug" element={<CertificateDetailPage />} />
+          
+          <Route path="/exam" element={<CommunityLayout />}>
+            <Route index element={<ExamPage />} />
+            <Route path=":id" element={<ExamDetailPage />} />
             <Route
               path="new"
               element={
                 <RequireAuth>
-                  <GalleryEditorPage />
+                  <ExamEditorPage mode="create" />
                 </RequireAuth>
               }
             />
-
-            {/* 수정 — 로그인 필요 */}
             <Route
               path=":id/edit"
               element={
                 <RequireAuth>
-                  <GalleryEditorPage />
+                  <ExamEditorPage mode="edit" />
                 </RequireAuth>
               }
             />
           </Route>
-          <Route path="/certificates/:slug" element={<CertificateDetailPage />} />
-
           {/* ── 그 외: 홈으로 리다이렉트 */}
           {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           <Route path="/privacy" element={<LegalPrivacy />} />

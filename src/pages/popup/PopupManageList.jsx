@@ -23,7 +23,8 @@ export default function PopupManageList() {
     try {
       setLoading(true);
       const { data } = await axios.get('/api/popup/');
-      setItems(Array.isArray(data) ? data : []);
+      const rows = Array.isArray(data) ? data : (data?.results ?? []);
+      setItems(rows);
     } catch (e) {
       alert('팝업 목록 로딩 실패');
     } finally {
@@ -98,8 +99,8 @@ export default function PopupManageList() {
           {items.map(item => (
             <li key={item.id} className="border rounded-xl bg-white overflow-hidden">
               <div className="aspect-[4/3] bg-gray-50">
-                {item.image ? (
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                {(item.image_url || item.image) ? (
+                  <img src={item.image_url ?? ''} alt={item.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">이미지 없음</div>
                 )}

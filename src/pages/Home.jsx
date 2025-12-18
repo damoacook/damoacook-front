@@ -6,13 +6,15 @@ import MainBannerSlider from "../components/MainBannerSlider";
 import MenuBox from "../components/MenuBox";
 import PopupBanner from "../components/PopupBanner";
 import LectureCard from "../components/LectureCard";
-import { FaBook, FaSchool, FaImages, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
+// import { FaBook, FaSchool, FaImages, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
+import { FaBook, FaSchool, FaImages, FaMapMarkerAlt, FaPhone, FaClipboardList } from "react-icons/fa";
 import axios from "axios";
 import { fetchAcademyLectures, fetchHrdLectures } from "../api/lectures";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { fetchNewsList } from "../api/news";
 import { fetchGalleryList } from "../api/gallery";
+import { fetchExamList } from "../api/examBoard";
 import "swiper/css";
 import "swiper/css/navigation";
 import FacilityShowcaseHome from "../sections/FacilityShowcaseHome";
@@ -84,15 +86,16 @@ export default function HomePage() {
   const [lectures, setLectures] = useState([]);
   const [news, setNews] = useState([]);
   const [gallery, setGallery] = useState([]);
+  const [exams, setExams] = useState([]);
 
   // 팝업
   useEffect(() => {
     axios
-      .get("/api/popup/")
+      .get("/api/popup/?active_only=true&page_size=1")
       .then((res) => {
-        const items = Array.isArray(res.data) ? res.data : [];
-        const active = items.filter((i) => i.is_active);
-        const pick = active[0] || items[0] || null;
+        const data  = res.data;
+        const items = Array.isArray(data) ? data : (data?.results ?? []);
+        const pick  = items[0] ?? null;
 
         const now = new Date();
         const visible = pick
@@ -107,7 +110,7 @@ export default function HomePage() {
       .catch((err) => console.error("팝업 로딩 실패:", err));
   }, []);
 
-  // 🔥 모집중 강의 로드 (내부 + HRD 합치기, 상태 정규화)
+  //  모집중 강의 로드 (내부 + HRD 합치기, 상태 정규화)
   useEffect(() => {
     async function loadLectures() {
       try {
@@ -148,9 +151,10 @@ export default function HomePage() {
   useEffect(() => {
     async function loadExtra() {
       try {
-        const [n, g] = await Promise.all([fetchNewsList(), fetchGalleryList()]);
+        const [n, g, e] = await Promise.all([fetchNewsList(), fetchGalleryList(), fetchExamList()]);
         setNews(n?.results?.slice(0, 4) ?? []);
         setGallery(g?.results?.slice(0, 4) ?? []);
+        setExams(e?.results?.slice(0, 4) ?? []);
       } catch (e) {
         console.error("공지/갤러리 로딩 실패:", e);
       }
@@ -168,6 +172,7 @@ export default function HomePage() {
     { icon: FaBook, title: "모집과정", link: "/lectures" },
     { icon: FaSchool, title: "학원소개", link: "/about" },
     { icon: FaImages, title: "갤러리", link: "/gallery" },
+    { icon: FaClipboardList, title: "시험정보", link: "/exam" },
     { icon: FaMapMarkerAlt, title: "위치안내", link: "/about/location" },
   ];
 
@@ -184,7 +189,7 @@ export default function HomePage() {
         <PopupBanner
           key={b.id}
           id={b.id}
-          image={b.image}
+          image={b.image_url ?? b.image ?? ""}
           onClose={(id) => setPopupBanners((prev) => prev.filter((p) => p.id !== id))}
         />
       ))}
@@ -204,7 +209,7 @@ export default function HomePage() {
       >
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center">
           <div className="col-span-2 md:col-span-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {menus.map((m) => (
                 <motion.div key={m.title} variants={fadeUp} whileHover={{ scale: 1.02 }}>
                   <MenuBox
@@ -330,19 +335,39 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* 시험정보 */}
+            {/* <div>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">시험정보</h2>
+                <Link to="/exam" className="text-sm text-gray-500 hover:text-orange-600 transition-colors">
+                  전체보기 →
+                </Link>
+              </div>
+              <ul className="divide-y divide-gray-200 rounded-xl border border-gray-100 bg-white/70 backdrop-blur">
+                {exams.map((item) => (
+                  <li key={item.id} className="py-3 px-4 hover:bg-orange-50/50 transition">
+                    <Link to={`/exam/${item.id}`} className="text-sm text-gray-800 hover:text-orange-600 line-clamp-1">
+                      {item.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div> */}
+          </div>
         </section>
       </motion.section>
 
-      {/* ✅ 시설 소개 */}
+      {/* 시설 소개 */}
       <FacilityShowcaseHome />
       
-      {/* ✅ 지도 */}
+      {/* 지도 */}
       <ContactMapCta />
 
-      {/* ✅ 수강문의 */}
+      {/* 수강문의 */}
       <InquiryCtaSection />
 
-      {/* ✅ 협력업체 */}
+      {/* 협력업체 */}
       <PartnersSection partners={partnersHome} />
     </div>
   );

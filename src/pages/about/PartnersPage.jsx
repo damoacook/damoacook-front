@@ -162,7 +162,7 @@ export default function AboutPartnersPage() {
       </section>
 
       {/* 업로드 가이드 */}
-      <div className="mx-auto max-w-6xl px-6 pb-12">
+      {/* <div className="mx-auto max-w-6xl px-6 pb-12">
         <div className="rounded-xl border border-gray-200 bg-white p-4 text-xs text-gray-500">
           <p className="font-medium text-gray-700">로고 업로드 가이드</p>
           <ul className="mt-1.5 list-disc pl-5 space-y-0.5">
@@ -171,7 +171,7 @@ export default function AboutPartnersPage() {
             <li>여백(패딩) 포함된 로고가 더 균일하게 보입니다</li>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
