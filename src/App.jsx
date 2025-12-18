@@ -32,9 +32,9 @@ import NewsEditorPage from './pages/Community/NewsEditorPage';
 import GalleryPage from './pages/Community/GalleryPage';
 import GalleryDetailPage from './pages/Community/GalleryDetailPage';
 import GalleryEditorPage from './pages/Community/GalleryEditorPage';
-import ExamPage from './pages/Community/ExamPage';
-import ExamDetailPage from './pages/Community/ExamDetailPage';
-import ExamEditorPage from './pages/Community/ExamEditorPage';
+// import ExamPage from './pages/Community/ExamPage';
+// import ExamDetailPage from './pages/Community/ExamDetailPage';
+// import ExamEditorPage from './pages/Community/ExamEditorPage';
 import RequireAuth from './routes/RequireAuth';
 
 import LegalPrivacy from "./pages/LegalPrivacy";
@@ -94,7 +94,7 @@ export default function App() {
           </Route>
           <Route path="/certificates/:slug" element={<CertificateDetailPage />} />
           
-          <Route path="/exam" element={<CommunityLayout />}>
+          {/* <Route path="/exam" element={<CommunityLayout />}>
             <Route index element={<ExamPage />} />
             <Route path=":id" element={<ExamDetailPage />} />
             <Route
@@ -113,7 +113,7 @@ export default function App() {
                 </RequireAuth>
               }
             />
-          </Route>
+          </Route> */}
           {/* ── 그 외: 홈으로 리다이렉트 */}
           {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           <Route path="/privacy" element={<LegalPrivacy />} />
